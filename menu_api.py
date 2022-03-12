@@ -1,9 +1,9 @@
 from models import *
 
-# with db:
-#     db.create_tables([Order, Product, Category, Item, Sale, User])
-#
-#     print('Tables created')
+with db:
+    db.create_tables([Order, Product, Category, Item, Sale, User])
+
+    print('Tables created')
 
 with db:
     products = Product.select()
@@ -13,32 +13,38 @@ with db:
         {
             'name': 'Классическая',
             'price': 209,
-            'category_id': 1
+            'category_id': 1,
+            'image_uri': 'classic.webp'
         },
         {
             'name': 'Двойная',
             'price': 269,
-            'category_id': 1
+            'category_id': 1,
+            'image_uri': 'double.webp'
         },
         {
             'name': 'Фалафель',
             'price': 199,
-            'category_id': 1
+            'category_id': 1,
+            'image_uri': 'falafel.webp'
         },
         {
             'name': 'Сырный',
             'price': 40,
-            'category_id': 2
+            'category_id': 3,
+            'image_uri': 'classic.webp'
         },
         {
             'name': 'Карри',
             'price': 40,
-            'category_id': 2
+            'category_id': 3,
+            'image_uri': 'classic.webp'
         },
         {
             'name': 'Кетчуп',
             'price': 40,
-            'category_id': 2
+            'category_id': 3,
+            'image_uri': 'classic.webp'
         },
     ]
 

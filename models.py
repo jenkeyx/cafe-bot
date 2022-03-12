@@ -32,6 +32,7 @@ class Product(BaseModel):
     name = TextField()
     price = FloatField()
     category = ForeignKeyField(Category)
+    image_uri = TextField()
 
     class Meta:
         db_table = "products"
