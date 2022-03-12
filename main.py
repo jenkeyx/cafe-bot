@@ -3,19 +3,23 @@ import tempfile
 from urllib import request
 import ssl
 
+import telebot
+from telebot import types
+from menu_api import get_categories, get_products_by_category, create_order, get_order_by_chat_id
+
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
-import telebot
-from telebot import types
-from menu_api import get_categories, get_products_by_category
+TOKEN = "5091875742:AAGTnoYdTVf0J5LK57TrUTiSk1WV1NMxG5k"
+S3_BUCKET_URL = "https://cafe-bot-product-images.s3.eu-north-1.amazonaws.com/"
+INVOKE_URL = "https://h366s2k3l2.execute-api.eu-north-1.amazonaws.com/v0/bot_handler5091875742:AAGTnoYdTVf0J5LK57TrUTiSk1WV1NMxG5k"
 
-token = "5091875742:AAGTnoYdTVf0J5LK57TrUTiSk1WV1NMxG5k"
-s3_bucket_url = "https://cafe-bot-product-images.s3.eu-north-1.amazonaws.com/"
-bot = telebot.TeleBot(token)
+bot = telebot.TeleBot(TOKEN)
 
 base_labels = ["Menu", "Promos", "Order status"]
+
+bot.set_webhook(INVOKE_URL)
 
 
 @bot.message_handler(commands=['start'])
@@ -53,11 +57,24 @@ def assortment_handler(call):
 
 def send_products(products, chat_id):
     for product in products:
-        response = request.urlopen(s3_bucket_url + product.image_uri, context=ctx)
+        # receiving photo from AWS S3 bucket and store data in temporary file
+        response = request.urlopen(S3_BUCKET_URL + product.image_uri, context=ctx)
         tmp_file = tempfile.NamedTemporaryFile(delete=False)
         shutil.copyfileobj(response, tmp_file)
+
+        # adding a button to make an order
+        inline_markup = types.InlineKeyboardMarkup(row_width=1)
+        order_button = types.InlineKeyboardButton(text='купить', callback_data=product.name)
+        inline_markup.add(order_button)
+
         bot.send_photo(chat_id, open(tmp_file.name, "rb"))
-        bot.send_message(chat_id, f"{product.name} – {product.price}₽")
+        bot.send_message(chat_id, f"{product.name} – {product.price}₽", reply_markup=inline_markup)
 
 
-bot.polling()
+@bot.callback_query_handler(func=lambda callback: callback.data)
+def handle_order(call):
+    create_order(call.message.chat.id)
+    order_number = get_order_by_chat_id(call.message.chat.id)
+    bot.send_message(call.message.chat.id, f"ваш заказ №{order_number}")
+
+

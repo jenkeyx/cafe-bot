@@ -92,4 +92,11 @@ def get_products_by_category(category):
         return Product.select().where(Product.category_id == '1')
 
 
-get_categories()
+def get_order_by_chat_id(chat_id):
+    return Order.get(Order.number == chat_id)
+
+
+def create_order(chat_id):
+    new_order = Order(number=chat_id, deadline=1, satus="created")
+    new_order.save()
+
