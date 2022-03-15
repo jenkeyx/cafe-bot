@@ -23,6 +23,8 @@ bot = telebot.TeleBot(TOKEN)
 fill_tables()
 fill_products()
 
+about_text = "Мы – кафе Lorem Ipsum.\n 📍Работаем по адресу СПб, улица Пушкина.\n 🕗 Ты можешь прийти к нам в гости с 10:00 до 11:00"
+
 
 @bot.message_handler(commands=['start'])
 def say_hello(message):
@@ -56,9 +58,14 @@ def send_keyboard(chat_id, button_labels, text="What can I help for you?"):
 
 
 def assortment_handler(call):
-    products = get_products_by_category(call.text)
-    send_products(products, call.chat.id)
-    send_keyboard(call.chat.id, get_categories(), text='Что-нибудь еще желаете посмотреть?')
+    if call.text == 'Шаверма' or call.text == 'Напитки' or call.text == 'Десерты' or call.text == 'Соусы':
+        products = get_products_by_category(call.text)
+        send_products(products, call.chat.id)
+        send_keyboard(call.chat.id, get_categories(), text='Что-нибудь еще желаете посмотреть?')
+    elif call.text == '/about':
+        bot.send_message(call.chat.id, text=about_text, reply_markup=types.ReplyKeyboardRemove())
+    else:
+        bot.send_message(call.chat.id, text="Я не знаю, чего вы хотите", reply_markup=types.ReplyKeyboardRemove())
 
 
 def send_products(products, chat_id):
