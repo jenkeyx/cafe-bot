@@ -28,9 +28,9 @@ about_text = "Мы – кафе Lorem Ipsum.\n 📍Работаем по адр�
 
 @bot.message_handler(commands=['start'])
 def say_hello(message):
-    bot.send_message(message.from_user.id, text="Привет✌️! Это телеграмм-бот нашего кафе.\n "
+    bot.send_message(message.from_user.id, text="Привет✌️! Это телеграмм-бот нашего кафе.\n"
                                                 "Посмотри наше меню /menu и сделай свой заказ.\n"
-                                                " Узнай нас получше /about")
+                                                "Узнай нас получше /about")
 
 
 @bot.message_handler(commands=['about'])
