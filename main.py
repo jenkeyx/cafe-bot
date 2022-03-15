@@ -78,8 +78,8 @@ def send_products(products, chat_id):
 
 @bot.callback_query_handler(func=lambda callback: callback.data)
 def handle_order(call):
-    create_order(call.message.chat.id)
-    order_number = get_order_by_chat_id(call.message.chat.id)
+    order_number = create_order(call.message.chat.id)
+
     bot.send_message(call.message.chat.id, f"ваш заказ №{order_number}")
 
 

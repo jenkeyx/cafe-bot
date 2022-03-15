@@ -14,6 +14,7 @@ class BaseModel(Model):
 
 class Order(BaseModel):
     number = IntegerField()
+    user = IntegerField()
     deadline = TimestampField()
     status = TextField()
 

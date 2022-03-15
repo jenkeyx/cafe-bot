@@ -1,3 +1,5 @@
+from random import randint
+
 from models import *
 
 
@@ -127,9 +129,22 @@ def get_products_by_category(category):
 
 
 def get_order_by_chat_id(chat_id):
-    return Order.get(Order.number == chat_id)
+    try:
+        return Order.get(Order.user == chat_id)
+    except:
+        return None
+
+
+def get_order_by_number(number):
+    try:
+        return Order.get(Order.number == number)
+    except:
+        return None
 
 
 def create_order(chat_id):
-    new_order = Order(number=chat_id, deadline=1, satus="created")
+    order_number = randint(0, 100)
+    new_order = Order(number=order_number, user=chat_id, deadline=1, satus="created")
     new_order.save()
+
+    return order_number
