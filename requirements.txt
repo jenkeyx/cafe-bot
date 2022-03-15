@@ -1,8 +1,9 @@
 certifi==2021.10.8
-charset-normalizer==2.0.9
+charset-normalizer==2.0.12
 idna==3.3
-peewee==3.14.9
+peewee==3.14.10
 PyMySQL==1.0.2
-pyTelegramBotAPI==4.2.2
-requests==2.27.0
-urllib3==1.26.7
+pyTelegramBotAPI==4.4.0
+requests==2.27.1
+urllib3==1.26.8
+telebot== 0.0.4

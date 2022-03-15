@@ -4,9 +4,12 @@ from models import *
 
 
 def fill_tables():
-    db.create_tables([Order, Product, Category, Item, Sale, User])
+    try:
+        db.create_tables([Order, Product, Category, Item, Sale, User])
 
-    print('Tables created')
+        print('Tables created')
+    except:
+        print('Tables are already exists')
 
 
 def fill_products():
